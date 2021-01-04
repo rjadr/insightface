@@ -19,8 +19,8 @@ class AccMetric(mx.metric.EvalMetric):
         #print('ACC', label.shape, pred_label.shape)
         if pred_label.shape != label.shape:
             pred_label = mx.ndarray.argmax(pred_label, axis=self.axis)
-        pred_label = pred_label.asnumpy().astype('int32').flatten()
-        label = label.asnumpy()
+        pred_label = mx.nd.array(pred_label).astype('int32').flatten()
+        label = mx.nd.array(label)
         if label.ndim == 2:
             label = label[:, 0]
         label = label.astype('int32').flatten()
@@ -39,8 +39,8 @@ class LossValueMetric(mx.metric.EvalMetric):
         self.losses = []
 
     def update(self, labels, preds):
-        #label = labels[0].asnumpy()
-        pred = preds[-1].asnumpy()
+        #label = mx.nd.array(labels[0])
+        pred = mx.nd.array(preds[-1])
         #print('in loss', pred.shape)
         #print(pred)
         loss = pred[0]
