@@ -37,7 +37,7 @@ class FaceGenderage:
             data = mx.nd.zeros(shape=data_shape)
             db = mx.io.DataBatch(data=(data, ))
             model.forward(db, is_train=False)
-            embedding = model.get_outputs()[0].asnumpy()
+            embedding = mx.nd.array(model.get_outputs()[0])
             self.model = model
         else:
             pass
@@ -51,7 +51,7 @@ class FaceGenderage:
         data = mx.nd.array(data)
         db = mx.io.DataBatch(data=(data, ))
         self.model.forward(db, is_train=False)
-        ret = self.model.get_outputs()[0].asnumpy()
+        ret = mx.nd.array(self.model.get_outputs()[0])
         g = ret[:, 0:2].flatten()
         gender = np.argmax(g)
         a = ret[:, 2:202].reshape((100, 2))
