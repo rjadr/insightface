@@ -179,7 +179,7 @@ class FaceImageIter(io.DataIter):
         from PIL import Image
         from io import BytesIO
         buf = BytesIO()
-        img = Image.fromarray(img.asnumpy(), 'RGB')
+        img = Image.fromarray(mx.nd.array(img), 'RGB')
         q = random.randint(2, 20)
         img.save(buf, format='JPEG', quality=q)
         buf = buf.getvalue()
