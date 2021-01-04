@@ -230,7 +230,7 @@ class FaceDetector:
         data = mx.nd.zeros(shape=data_shape)
         db = mx.io.DataBatch(data=(data, ))
         model.forward(db, is_train=False)
-        out = model.get_outputs()[0].asnumpy()
+        out = mx.nd.array(model.get_outputs()[0])
         self.model = model
         self.nms_threshold = nms
 
@@ -338,10 +338,10 @@ class FaceDetector:
                 idx = _idx * 3
             else:
                 idx = _idx * 2
-            scores = net_out[idx].asnumpy()
+            scores = mx.nd.array(net_out[idx])
             scores = scores[:, self._num_anchors['stride%s' % s]:, :, :]
             idx += 1
-            bbox_deltas = net_out[idx].asnumpy()
+            bbox_deltas = mx.nd.array(net_out[idx])
 
             height, width = bbox_deltas.shape[2], bbox_deltas.shape[3]
             A = self._num_anchors['stride%s' % s]
@@ -379,7 +379,7 @@ class FaceDetector:
 
             if self.use_landmarks:
                 idx += 1
-                landmark_deltas = net_out[idx].asnumpy()
+                landmark_deltas = mx.nd.array(net_out[idx])
                 landmark_deltas = clip_pad(landmark_deltas, (height, width))
                 landmark_pred_len = landmark_deltas.shape[1] // A
                 landmark_deltas = landmark_deltas.transpose(
