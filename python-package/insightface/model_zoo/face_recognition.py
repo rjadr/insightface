@@ -40,7 +40,7 @@ class FaceRecognition:
             data = mx.nd.zeros(shape=data_shape)
             db = mx.io.DataBatch(data=(data, ))
             model.forward(db, is_train=False)
-            embedding = model.get_outputs()[0].asnumpy()
+            embedding = mx.nd.array(model.get_outputs()[0])
             self.model = model
         else:
             pass
@@ -54,7 +54,7 @@ class FaceRecognition:
         data = mx.nd.array(data)
         db = mx.io.DataBatch(data=(data, ))
         self.model.forward(db, is_train=False)
-        embedding = self.model.get_outputs()[0].asnumpy()
+        embedding = mx.nd.array(self.model.get_outputs()[0])
         return embedding
 
     def compute_sim(self, img1, img2):
